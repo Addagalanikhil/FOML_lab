@@ -1,0 +1,49 @@
+import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+
+# Load the Iris dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a K-Nearest Neighbors classifier
+knn = KNeighborsClassifier(n_neighbors=5)
+
+# Fit the model using the training data
+knn.fit(X_train, y_train)
+
+# Predict the labels for the test data
+y_pred = knn.predict(X_test)
+
+# Calculate the confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:")
+print(cm)
+
+# Calculate the accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+
+# Calculate precision, recall, and F1 score for each class
+precision = precision_score(y_test, y_pred, average=None)
+recall = recall_score(y_test, y_pred, average=None)
+f1 = f1_score(y_test, y_pred, average=None)
+
+print("Precision for each class:", precision)
+print("Recall for each class:", recall)
+print("F1 score for each class:", f1)
+
+# Calculate the macro-average precision, recall, and F1 score
+precision_macro = precision_score(y_test, y_pred, average='macro')
+recall_macro = recall_score(y_test, y_pred, average='macro')
+f1_macro = f1_score(y_test, y_pred, average='macro')
+
+print("Macro-average Precision:", precision_macro)
+print("Macro-average Recall:", recall_macro)
+print("Macro-average F1 score:", f1_macro)
