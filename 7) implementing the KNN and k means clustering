@@ -1,0 +1,73 @@
+import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+
+# Load the Iris dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# KNN Classification
+# Create a K-Nearest Neighbors classifier
+knn = KNeighborsClassifier(n_neighbors=5)
+
+# Fit the model using the training data
+knn.fit(X_train, y_train)
+
+# Predict the labels for the test data
+y_pred = knn.predict(X_test)
+
+# Calculate the confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:")
+print(cm)
+
+# Calculate the accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+
+# Calculate precision, recall, and F1 score for each class
+precision = precision_score(y_test, y_pred, average=None)
+recall = recall_score(y_test, y_pred, average=None)
+f1 = f1_score(y_test, y_pred, average=None)
+
+print("Precision for each class:", precision)
+print("Recall for each class:", recall)
+print("F1 score for each class:", f1)
+
+# Calculate the macro-average precision, recall, and F1 score
+precision_macro = precision_score(y_test, y_pred, average='macro')
+recall_macro = recall_score(y_test, y_pred, average='macro')
+f1_macro = f1_score(y_test, y_pred, average='macro')
+
+print("Macro-average Precision:", precision_macro)
+print("Macro-average Recall:", recall_macro)
+print("Macro-average F1 score:", f1_macro)
+
+# K-Means Clustering
+# Initialize the KMeans model
+kmeans = KMeans(n_clusters=3, random_state=42)
+
+# Fit the model to the data
+kmeans.fit(X)
+
+# Get the cluster labels
+labels = kmeans.labels_
+
+# Get the cluster centers
+centers = kmeans.cluster_centers_
+
+# Plot the clusters
+plt.scatter(X[:, 0], X[:, 1], c=labels, cmap='viridis', marker='o')
+plt.scatter(centers[:, 0], centers[:, 1], c='red', marker='x')
+plt.title('K-Means Clustering of Iris Dataset')
+plt.xlabel('Sepal Length')
+plt.ylabel('Sepal Width')
+plt.show()
